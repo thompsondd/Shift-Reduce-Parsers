@@ -1,0 +1,3 @@
+nltk
+PyQt5
+pandas
