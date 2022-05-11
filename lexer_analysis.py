@@ -85,5 +85,7 @@ def lex(url):
     data=_read_data(url)
     tokens= [ i[0] for i in lexer(data)]
     tokens.insert(0,"EMP")
+    tokens.insert(0,"START")
     tokens.append("EMP")
+    tokens.append("END")
     return tokens

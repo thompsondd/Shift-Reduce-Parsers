@@ -5,13 +5,15 @@ from lexer_analysis import *
 import pandas as pd
 
 grammar1 = nltk.CFG.fromstring("""
-program -> branch_stmt | 'EMP' assign | 'EMP' block| program block 'EMP'| program program | program assign | program assign 'EMP' | 'EMP' print_stmt 'newline' | 'EMP' input_stmt 'newline' | program block 'newline' | program assign 'newline' | program 'EMP' | stmt| program 'newline' | end_branch_stmt | program exp 'EMP' |program exp 'newline' |'EMP' exp 
+program -> "START" statements "END"
+
+statements -> branch_stmt | 'EMP' assign | 'EMP' block| statements block 'EMP'| statements statements | statements assign | statements assign 'EMP' | 'EMP' print_stmt 'newline' | 'EMP' input_stmt 'newline' | statements block 'newline' | statements assign 'newline' | statements 'EMP' | stmt| statements 'newline' | end_branch_stmt | statements exp 'EMP' |statements exp 'newline' |'EMP' exp 
 
 branch_stmt -> 'EMP' if_stmt | 'EMP' while_stmt | 'EMP' for_stmt
 
 stmt -> for_stmt 'newline' | while_stmt 'newline' | if_stmt 'newline'
 
-end_branch_stmt -> program for_stmt 'EMP' | program while_stmt 'EMP' | program if_stmt 'EMP'
+end_branch_stmt -> statements for_stmt 'EMP' | statements while_stmt 'EMP' | statements if_stmt 'EMP'
 
 block_ ->  'tab' if_stmt | 'tab' for_stmt | 'tab' while_stmt | 'tab' print_stmt | 'tab'assign | 'tab' input_stmt | 'tab' exp_stmt | 'tab' block | 'tab' block_
 
