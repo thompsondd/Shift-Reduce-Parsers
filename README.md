@@ -5,11 +5,11 @@ Phân tích cú pháp ngôn ngữ Python
 * pyqt5
 
 ### Cách cài đặt:
-    <pre> pip install -r requirements.txt </pre>
+<pre> pip install -r requirements.txt </pre>
     
     
 ### Cách sử dụng:
-    <pre> python main.py </pre>
+<pre> python main.py </pre>
     
     
 ### Hình ảnh ứng dụng:
