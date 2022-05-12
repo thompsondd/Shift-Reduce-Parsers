@@ -1,3 +1,3 @@
-from graph_interface import main as Simple_Complier
+from graph_interface import main as Simple_Parser
 
-Simple_Complier()
+Simple_Parser()
