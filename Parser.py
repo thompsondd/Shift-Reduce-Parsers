@@ -5,7 +5,7 @@ from lexer_analysis import *
 import pandas as pd
 
 grammar1 = nltk.CFG.fromstring("""
-program -> "START" statements "END"
+program -> 'START' statements 'END'
 
 statements -> branch_stmt | 'EMP' assign | 'EMP' block| statements block 'EMP'| statements statements | statements assign | statements assign 'EMP' | 'EMP' print_stmt 'newline' | 'EMP' input_stmt 'newline' | statements block 'newline' | statements assign 'newline' | statements 'EMP' | stmt| statements 'newline' | end_branch_stmt | statements exp 'EMP' |statements exp 'newline' |'EMP' exp 
 
@@ -19,19 +19,37 @@ block_ ->  'tab' if_stmt | 'tab' for_stmt | 'tab' while_stmt | 'tab' print_stmt 
 
 block -> 'tab' block_ | block_
 
-exp_stmt1 -> number '*' identifer | number '-' identifer | number '+' identifer | number '/' identifer | identifer '*' number | identifer '-' number | identifer '+' number | identifer '/' number
+exp_stmt1 ->  number '-' identifier | number '+' identifier |  identifier '-' number | identifier '+' number 
 
-exp_stmt -> number '*' number | number '-' number | number '+' number | number '/' number | identifer '*' identifer | identifer '-' identifer | identifer '+' identifer | identifer '/' identifer | exp_stmt1 
+exp_stmt2 -> number '+' exp_stmt |number '-' exp_stmt |  exp_stmt '-' number | exp_stmt '+' number | identifier '+' exp_stmt | identifier '-' exp_stmt | exp_stmt '+' identifier | exp_stmt '-' identifier
 
-assign -> identifer '=' exp_stmt | identifer '=' 'string' | identifer '=' number "newline" | identifer '=' number "EMP" | identifer '=' bool_value | identifer '=' exp | identifer '=' '(' exp_stmt ')' | assign assign | i_r | identifer '=' identifer 'newline' | identifer '=' identifer 'EMP'
+exp_stmt ->  number '-' number | number '+' number | identifier '-' identifier | identifier '+' identifier |  exp_stmt1 | exp_stmt2 | factor_id |factor_atom | factor_num | sp_exp | exp_sub_stmt | sp_sub_exp_stmt
 
-i_r -> identifer '+' '=' number | identifer '-' '=' number | identifer '*' '=' number | identifer '/' '=' number
+sp_sub_exp_stmt -> special_exp_stmt '+' exp_stmt | special_exp_stmt '-' exp_stmt | special_exp_stmt '*' exp_stmt | special_exp_stmt '/' exp_stmt | exp_stmt '*' special_exp_stmt | exp_stmt '/' special_exp_stmt | exp_stmt '-' special_exp_stmt | exp_stmt '+' special_exp_stmt
 
-print_stmt -> 'print' '(' exp_stmt ')' | 'print' '(' input_stmt ')' | 'print' '(' identifer ')' | 'print' '(' exp ')' | 'print' '(' number ')' | 'print' '(' 'string' ')' |'print' '(' ')'
+exp_sub_stmt -> exp_stmt '*' exp_stmt | exp_stmt '+' exp_stmt | exp_stmt '/' exp_stmt | exp_stmt '-' exp_stmt
 
-exp -> identifer compare identifer | identifer compare number | number compare number | bool_value | identifer compare '(' exp_stmt ')' | '(' exp ')'
+special_exp_stmt -> '(' exp_stmt ')'
 
-for_stmt -> 'for' identifer 'in' 'range' '(' number ')' 'colon' 'newline' block
+sp_exp -> special_exp_stmt '*' special_exp_stmt | special_exp_stmt '-' special_exp_stmt | special_exp_stmt '/' special_exp_stmt | special_exp_stmt '+' special_exp_stmt | sp_exp_1 | sp_exp_2
+
+sp_exp_1 -> special_exp_stmt '*' number | special_exp_stmt '/' number | special_exp_stmt '-' number | special_exp_stmt '+' number | number '+' special_exp_stmt | number '-' special_exp_stmt | number '/' special_exp_stmt | number '*' special_exp_stmt
+
+sp_exp_2 -> special_exp_stmt '*' identifier | special_exp_stmt '/' identifier | special_exp_stmt '-' identifier | special_exp_stmt '+' identifier | identifier '+' special_exp_stmt | identifier '-' special_exp_stmt | identifier '/' special_exp_stmt | identifier '*' special_exp_stmt
+
+assign -> identifier '=' exp_stmt 'newline'| identifier '=' 'string' 'newline'| identifier '=' number 'newline' | identifier '=' bool_value 'newline' | identifier '=' exp 'newline' | assign_sub
+
+assign_sub -> identifier '=' number 'EMP' | identifier '=' bool_value 'EMP' | identifier '=' exp 'EMP' | identifier '=' special_exp_stmt | assign assign | i_r | identifier '=' identifier 'EMP' | identifier '=' identifier 'EMP' | identifier '=' exp_stmt 'EMP'| identifier '=' 'string' 'EMP'| identifier '=' number 'EMP'
+
+i_r -> identifier '+' '=' number | identifier '-' '=' number | identifier '*' '=' number | identifier '/' '=' number | i_r_1
+
+i_r_1 -> identifier '+' '=' special_exp_stmt | identifier '-' '=' special_exp_stmt | identifier '*' '=' special_exp_stmt | identifier '/' '=' special_exp_stmt
+
+print_stmt -> 'print' special_exp_stmt | 'print' '(' input_stmt ')' | 'print' '(' identifier ')' | 'print' '(' exp ')' | 'print' '(' number ')' | 'print' '(' 'string' ')' |'print' '(' ')'
+
+exp -> identifier compare identifier | identifier compare number | number compare number | bool_value | identifier compare special_exp_stmt | special_exp_stmt compare special_exp_stmt | special_exp_stmt compare identifier| '(' exp ')'
+
+for_stmt -> 'for' identifier 'in' 'range' '(' number ')' 'colon' 'newline' block
 
 if_stmt -> 'if' exp 'colon' 'newline' block | 'if' exp 'colon' 'newline' block 'newline' elif_stmt|'if' exp 'colon' 'newline' block 'newline' else_block
 
@@ -41,13 +59,19 @@ elif_stmt -> 'elif' exp 'colon' 'newline' block 'newline' elif_stmt|'newline' if
 
 while_stmt -> 'while' exp 'colon' 'newline' block
 
-input_stmt -> identifer '=' 'input' '(' ')'
+factor_atom -> number '*' identifier | number '/' identifier | identifier '*' number | identifier '/' number | number '*' number | number '/' number | identifier '*' identifier | identifier '/' identifier 
 
-identifer -> 'var' | '(' 'var' ')'
+factor_num -> number '*' exp_stmt |  number '/' exp_stmt | exp_stmt '*' number | exp_stmt '/' number
+
+factor_id -> identifier '*' exp_stmt | identifier '/' exp_stmt | exp_stmt '*' identifier | exp_stmt '/' identifier
+
+input_stmt -> identifier '=' 'input' '(' ')'
+
+identifier -> 'var' | '(' 'var' ')'
 
 number -> '(' number ')' | 'num'
 
-compare -> '<'|'>'|'>='|'<='|'=='
+compare -> '<'|'>'|'>='|'<='|'=='|"!="
 
 bool_value -> 'True' | 'False'
   

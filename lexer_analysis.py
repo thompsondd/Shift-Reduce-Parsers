@@ -1,7 +1,8 @@
 import re
 key_words = {
-                "operator":["+","-","*","/",">","<","!=",">=","<=","(",")"],
-                "key_word":["if","elif","else","input","print","while"],
+                "operator":["+","-","*","/",">","<","(",")"],
+                "operator_2":[">=","<=","!=","=="],
+                "key_word":["if","elif","else","input","print","while",'True','False'],
                 "symbol":{":":"colon","\t":"tab",'\n':"newline"}
             }
 
@@ -56,14 +57,18 @@ def _lex(data):
         c=d.getNextChar()
         if c==" ":
             pass
-        elif c in key_words["operator"]:
-            yield(tuple(c))
+        elif c in key_words["operator"] or c in ["!","="]:
+            if d.next_char() !=None and c+d.next_char() in key_words["operator_2"]:
+                name=c
+                c=d.getNextChar()
+                name+=c
+                yield(tuple([name]))
+            else:
+                yield(tuple(c))
         elif c in key_words["symbol"].keys():
             yield((key_words["symbol"][c],c))
         elif c in ["'",'"']:
             yield(("string",_scan_string(c,d)))
-        elif c =="=":
-            yield(tuple([f"={d.getNextChar() if d.next_char() == '=' else ''}"]))
         elif re.match("[.0-9]", c): 
             yield(_scan(c,d, "[.0-9]"))
         elif re.match("[_a-zA-Z]", c):
@@ -89,3 +94,5 @@ def lex(url):
     tokens.append("EMP")
     tokens.append("END")
     return tokens
+
+print(lex(r"input.py"))

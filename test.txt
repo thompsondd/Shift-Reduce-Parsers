@@ -1,0 +1,7 @@
+a=a+b*c
+a=5+b*c
+d=a+v+b
+a=a+b*c+(c+v*c)
+if a==b:
+    c=a+b
+    a=5+(b*c+d)*e
