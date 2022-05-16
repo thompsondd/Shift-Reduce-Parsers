@@ -2,7 +2,7 @@ import re
 key_words = {
                 "operator":["+","-","*","/",">","<","(",")"],
                 "operator_2":[">=","<=","!=","=="],
-                "key_word":["if","elif","else","input","print","while",'True','False'],
+                "key_word":["if","elif","else","input","print","while",'True','False',"for",'range','in'],
                 "symbol":{":":"colon","\t":"tab",'\n':"newline"}
             }
 

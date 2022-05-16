@@ -1,5 +1,3 @@
-while True:
-    if (a+b) == (c/e):
-        print(5)
-    else:
-        a=input()
+for i in range(n+1):
+    if i<=min:
+        min=i

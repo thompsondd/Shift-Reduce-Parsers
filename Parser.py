@@ -15,7 +15,7 @@ stmt -> for_stmt 'newline' | while_stmt 'newline' | if_stmt 'newline'
 
 end_branch_stmt -> statements for_stmt 'EMP' | statements while_stmt 'EMP' | statements if_stmt 'EMP'
 
-block_ ->  'tab' if_stmt | 'tab' for_stmt | 'tab' while_stmt | 'tab' print_stmt | 'tab'assign | 'tab' input_stmt | 'tab' exp_stmt | 'tab' block | 'tab' block_
+block_ ->  'tab' if_stmt | 'tab' for_stmt | 'tab' while_stmt | 'tab' print_stmt | 'tab'assign | 'tab' input_stmt | 'tab' exp_stmt | 'tab' block | 'tab' block_ | 'tab' else_block | 'tab' elif_block
 
 block -> 'tab' block_ | block_
 
@@ -49,13 +49,13 @@ print_stmt -> 'print' special_exp_stmt | 'print' '(' input_stmt ')' | 'print' '(
 
 exp -> identifier compare identifier | identifier compare number | number compare number | bool_value | identifier compare special_exp_stmt | special_exp_stmt compare special_exp_stmt | special_exp_stmt compare identifier| '(' exp ')'
 
-for_stmt -> 'for' identifier 'in' 'range' '(' number ')' 'colon' 'newline' block
+for_stmt -> 'for' identifier 'in' 'range' '(' number ')' 'colon' 'newline' block | 'for' identifier 'in' 'range' '(' identifier ')' 'colon' 'newline' block | 'for' identifier 'in' 'range' special_exp_stmt 'colon' 'newline' block
 
-if_stmt -> 'if' exp 'colon' 'newline' block | 'if' exp 'colon' 'newline' block 'newline' elif_stmt|'if' exp 'colon' 'newline' block 'newline' else_block
+if_stmt -> 'if' exp 'colon' 'newline' block | 'if' exp 'colon' 'newline' block 'newline' elif_block|'if' exp 'colon' 'newline' block 'newline' else_block
 
 else_block -> 'else' 'colon' 'newline' block | 'newline' if_stmt
 
-elif_stmt -> 'elif' exp 'colon' 'newline' block 'newline' elif_stmt|'newline' if_stmt
+elif_block -> 'elif' exp 'colon' 'newline' block 'newline' elif_block|'newline' if_stmt
 
 while_stmt -> 'while' exp 'colon' 'newline' block
 
