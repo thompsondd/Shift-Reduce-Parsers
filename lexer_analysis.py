@@ -6,12 +6,6 @@ key_words = {
                 "symbol":{":":"colon","\t":"tab",'\n':"newline"}
             }
 
-def _read_input(path):
-    data=None
-    with open(path,"r") as f:
-        data=f.readlines()
-    return list(map(lambda x: x.replace("    ","\t",),data))
-
 class DATA:
     def __init__(self,data):
         self.__data=data
@@ -76,8 +70,6 @@ def _lex(data):
         else:
             raise Exception("Unrecognised character: '" + c + "'.")
 
-def lexer(string):
-    return [i for i in _lex(string)]
 
 def _read_data(url):
     data=None
@@ -89,6 +81,9 @@ def _read_data(url):
         s += i.rstrip('\n')+" "
     return "".join(data)
 
+def lexer(string):
+    return [i for i in _lex(string)]
+    
 def lex(url):
     data=_read_data(url)
     tokens= [ i[0] for i in lexer(data)]
