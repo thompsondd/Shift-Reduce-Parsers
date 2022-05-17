@@ -80,7 +80,10 @@ def lexer(string):
     return [i for i in _lex(string)]
 
 def _read_data(url):
-    data=_read_input(url)
+    data=None
+    with open(url,"r") as f:
+        data=f.readlines()
+    data=list(map(lambda x: x.replace("    ","\t",),data))
     s=""
     for i in data:
         s += i.rstrip('\n')+" "
@@ -95,4 +98,4 @@ def lex(url):
     tokens.append("END")
     return tokens
 
-print(lex(r"input.py"))
+#print(lex(r"input.py"))

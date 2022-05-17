@@ -37,9 +37,9 @@ sp_exp_1 -> special_exp_stmt '*' number | special_exp_stmt '/' number | special_
 
 sp_exp_2 -> special_exp_stmt '*' identifier | special_exp_stmt '/' identifier | special_exp_stmt '-' identifier | special_exp_stmt '+' identifier | identifier '+' special_exp_stmt | identifier '-' special_exp_stmt | identifier '/' special_exp_stmt | identifier '*' special_exp_stmt
 
-assign -> identifier '=' exp_stmt 'newline'| identifier '=' 'string' 'newline'| identifier '=' number 'newline' | identifier '=' bool_value 'newline' | identifier '=' exp 'newline' | assign_sub
+assign -> identifier '=' exp_stmt 'newline'| identifier '=' 'string' 'newline'| identifier '=' number 'newline' | identifier '=' bool_value 'newline' | identifier '=' exp 'newline' | identifier '=' special_exp_stmt 'newline' | assign_sub
 
-assign_sub -> identifier '=' number 'EMP' | identifier '=' bool_value 'EMP' | identifier '=' exp 'EMP' | identifier '=' special_exp_stmt | assign assign | i_r | identifier '=' identifier 'EMP' | identifier '=' identifier 'EMP' | identifier '=' exp_stmt 'EMP'| identifier '=' 'string' 'EMP'| identifier '=' number 'EMP'
+assign_sub -> identifier '=' number 'EMP' | identifier '=' bool_value 'EMP' | identifier '=' exp 'EMP' | identifier '=' special_exp_stmt 'EMP' | assign assign | i_r | identifier '=' identifier 'EMP' | identifier '=' identifier 'EMP' | identifier '=' exp_stmt 'EMP'| identifier '=' 'string' 'EMP'| identifier '=' number 'EMP'
 
 i_r -> identifier '+' '=' number | identifier '-' '=' number | identifier '*' '=' number | identifier '/' '=' number | i_r_1
 
